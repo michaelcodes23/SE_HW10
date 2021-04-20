@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeSelection</title>
+</head>
+<style>
+    body {
+        text-align: center;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+</style>
+<body>
+    <h1>Checkout Your Pokemon Selction</h1>
+    <h2><%=data.name%></h2>
+    </div>
+    <img class = "img-fluid" src="<%=data.img%>">
+    <br>
+    <h2>Type(s)</h2>
+        <ul>
+            <%for(let i = 0; i < data.type.length;i++){%>
+                <li>
+                    <%=data.type[i]%>
+                </li>
+            <%}%>
+        </ul>
+    <h2>Stats</h2>
+        <h4>Hitpoints: <%=data.stats.hp%></h4>
+        <h4>Attack: <%=data.stats.attack%></h4>
+        <h4>Defense: <%=data.stats.defense%></h4>
+
+    <a class = "btn btn-primary btn-lg" href ="/pokemon">Back to index</a>
+</body>
+</html>
