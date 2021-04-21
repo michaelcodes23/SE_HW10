@@ -41,17 +41,18 @@
         
         <div id = "output">
             <h3> 
-                <%=data[i].name%> 
+               
+                <a href="/pokemon/<%=i%>">  <%=data[i].name%> </a>
             </h3>
-            <a href="/pokemon/<%=[i]%>"> <img src="<%=data[i].img%>"></a>
+            <a href="/pokemon/<%=i%>"> <img src="<%=data[i].img%>"></a>
             <br>
-            <a href = "/pokemon/<%=[i]%>/edit"><button >Edit</button></a>
-            <form method="POST" action="/pokemon/<%=[i]%>?_method=DELETE">
+            <a href = "/pokemon/<%=i%>/edit"><button >Edit</button></a>
+            <form method="POST" action="/pokemon/<%=i%>?_method=DELETE">
                 <button type = "submit">Delete</button></a>
             </form>
         </div>
         <%}%>
-    <% if (data.length > 151){%>
+    <!-- <% if (data.length > 151){%>
         <% let test = (data.length - 1)%>
         <div id = "output">
             <h3>
@@ -64,6 +65,6 @@
                 <button type = "submit">Delete</button></a>
             </form>
         </div>
-    <%}%>
+    <%}%> -->
 </body>
 </html>

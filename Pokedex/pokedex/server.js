@@ -1,58 +1,61 @@
 const express = require('express');
-//remove all mongoos if edit page does not run all the way down to line 11
-// const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true});
+
+const app = express();
+const port = 2000;
 const pokemon = require('./models/pokemon.js');
-const app = express()
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-  // we're connected!
-// });
+
 //include the method-override package
 const methodOverride = require('method-override')
-const port = 2000;
-
+//To display data without brackets
+app.use(express.json())
+//req.body
+app.use(express.urlencoded({ extended: true}))
 //tell system to read methodOverride
 //after app has been defined
 //use methodOverride.  We'll be adding a query parameter to our delete form named _method
 app.use(methodOverride('_method'))
+// css
+app.use(express.static(__dirname + '/css'))
 //Index
 //localhost:3000/
 app.get('/pokemon', (req , res) => {
-    res.render('index.ejs',{data: pokemon})
-})
+    
+    res.render('index.ejs',{
+        data: pokemon
+        });
+});
 //New Pokemon
 app.get('/pokemon/new',(req, res) =>{
-    res.render('new.ejs')
+    res.render('new.ejs',{
+        data: pokemon,
+        imgUrl: pokemon.img
+    })
 });
 //Show
 app.get('/pokemon/:id', (req, res) => {
-    res.render('show.ejs', {data: pokemon[req.params.id]})
+    console.log(pokemon[req.params.id]);
+    res.render('show.ejs', {
+        data: pokemon[req.params.id]
+    })
 })
 
 //Post - New Pokemon
-app.post('/pokemon',(req,res)=>{
-    console.log(req.body)
-    
-    // const outputs = now.getElementById('output')
-    // outputs.append(req.body)
-    pokemon.push(req.body)
+app.post('/pokemon', (req,res)=>{
+    let updatePokemon = {
+        name: req.body.name,
+        img: req.body.img,
+        type: req.body.type,
+        stats: {
+            hp: req.body.hp,
+            attack: req.body.attack,
+            defense: req.body.defense
+        }
+    }
+    console.log('Req.body for new: ', req.body)
+    pokemon.push(updatePokemon)
     res.redirect('/pokemon')
-    console.log(pokemon.length)
-  
 })
-//Update Route
-app.put('/pokemon/:id', (req, res) => {
-    console.log(req.body)
-    pokemon[req.params.id] = req.body //in the pokemon array, find the index
-    //that is specificed in the url. Set that element to the value of req.body (the input data)
-    // res.redirect('/pokemon')
-    res.render('index.ejs', {
-        data: pokemon
-      });
-})
-//Edit button
+//Edit
 app.get('/pokemon/:id/edit', async (req, res) =>{
     // res.send('Update Pokemon' + req.params.id)
   res.render(
@@ -64,6 +67,28 @@ app.get('/pokemon/:id/edit', async (req, res) =>{
       }
   )
 })
+//Update Route - for updating pokemon
+
+app.put('/pokemon/:id', (req, res) => {
+    console.log('Req.body is PUT: ', req.body)
+
+    let updatedPokemon = {
+        name: req.body.name,
+        img: req.body.img,
+        type: req.body.type,
+        stats: {
+            hp: req.body.hp,
+            attack: req.body.attack,
+            defense: req.body.defense
+        }
+    }
+
+    
+    pokemon[req.params.id] = updatedPokemon;
+    console.log(pokemon[req.params.id])
+    res.redirect('/pokemon/' + req.params.id);
+})
+
 //Delete button
 app.delete('/pokemon/:id',(req,res)=>{
     // res.send('Delete Pokemon' + req.params.id)
